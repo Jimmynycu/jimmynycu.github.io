@@ -1803,3 +1803,217 @@ img {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
+
+/* ===================================
+   GitHub Repos Section
+   =================================== */
+.github-repos {
+    background: var(--bg-darker);
+}
+
+.repos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.repos-loading {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    gap: 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.repo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: breathingGlow 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.repo-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.03), transparent);
+    animation: scanLine 4s linear infinite;
+    pointer-events: none;
+}
+
+.repo-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+}
+
+.repo-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.repo-name {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.repo-name svg {
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+}
+
+.repo-visibility {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--primary-light);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.repo-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.repo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.repo-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.repo-meta-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+.repo-language-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.repo-stats {
+    display: flex;
+    gap: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.repo-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.repo-stat svg {
+    width: 16px;
+    height: 16px;
+}
+
+.repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: auto;
+    padding-top: 12px;
+    transition: all 0.3s ease;
+}
+
+.repo-link:hover {
+    color: var(--secondary);
+    gap: 12px;
+}
+
+.repo-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+.github-link-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.github-profile-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.github-profile-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.repos-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+/* Language colors */
+.lang-python { background: #3572A5; }
+.lang-javascript { background: #f1e05a; }
+.lang-typescript { background: #3178c6; }
+.lang-html { background: #e34c26; }
+.lang-css { background: #563d7c; }
+.lang-go { background: #00ADD8; }
+.lang-rust { background: #dea584; }
+.lang-java { background: #b07219; }
+.lang-cpp { background: #f34b7d; }
+.lang-c { background: #555555; }
+.lang-shell { background: #89e051; }
+.lang-default { background: var(--primary); }

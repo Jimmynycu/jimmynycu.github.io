@@ -422,6 +422,84 @@ document.querySelectorAll('.project-card, .skill-category').forEach(card => {
 });
 
 /* ===================================
+   GitHub Repos - Auto-Update from API
+   =================================== */
+function initGitHubRepos() {
+    const GITHUB_USERNAME = 'Jimmynycu';
+    const reposGrid = document.getElementById('repos-grid');
+
+    if (!reposGrid) return;
+
+    const languageColors = {
+        'Python': '#3572A5',
+        'JavaScript': '#f1e05a',
+        'TypeScript': '#3178c6',
+        'HTML': '#e34c26',
+        'CSS': '#563d7c',
+        'Go': '#00ADD8',
+        'Rust': '#dea584',
+        'Java': '#b07219',
+        'C++': '#f34b7d',
+        'C': '#555555',
+        'Shell': '#89e051',
+        'Jupyter Notebook': '#DA5B0B'
+    };
+
+    fetch('https://api.github.com/users/' + GITHUB_USERNAME + '/repos?sort=updated&per_page=6')
+        .then(function (response) {
+            if (!response.ok) throw new Error('Failed to fetch');
+            return response.json();
+        })
+        .then(function (repos) {
+            var filteredRepos = repos.filter(function (repo) {
+                return !repo.fork && repo.name.toLowerCase() !== GITHUB_USERNAME.toLowerCase() + '.github.io';
+            }).slice(0, 6);
+
+            if (filteredRepos.length === 0) {
+                reposGrid.innerHTML = '<div class="repos-error"><p>No public repositories found yet.</p></div>';
+                return;
+            }
+
+            var html = '';
+            filteredRepos.forEach(function (repo, index) {
+                var langColor = languageColors[repo.language] || '#8b5cf6';
+                var langHtml = repo.language ?
+                    '<span class="repo-meta-item"><span class="repo-language-dot" style="background:' + langColor + '"></span>' + repo.language + '</span>' : '';
+
+                html += '<div class="repo-card reveal reveal-up" style="--reveal-delay:' + (0.1 * (index + 1)) + 's">' +
+                    '<div class="repo-header">' +
+                    '<h3 class="repo-name"><svg viewBox="0 0 16 16" fill="currentColor" width="18" height="18"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"/></svg>' + repo.name + '</h3>' +
+                    '<span class="repo-visibility">' + (repo.private ? 'Private' : 'Public') + '</span>' +
+                    '</div>' +
+                    '<p class="repo-description">' + (repo.description || 'No description available') + '</p>' +
+                    '<div class="repo-meta">' + langHtml +
+                    '<span class="repo-meta-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>' + repo.stargazers_count + '</span>' +
+                    '<span class="repo-meta-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-.878a2.25 2.25 0 111.5 0v.878a2.25 2.25 0 01-2.25 2.25h-1.5v2.128a2.251 2.251 0 11-1.5 0V8.5h-1.5A2.25 2.25 0 013 6.25v-.878a2.25 2.25 0 111.5 0zM5 3.25a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm6.75.75a.75.75 0 100-1.5.75.75 0 000 1.5zm-3 8.75a.75.75 0 10-1.5 0 .75.75 0 001.5 0z"/></svg>' + repo.forks_count + '</span>' +
+                    '</div>' +
+                    '<a href="' + repo.html_url + '" class="repo-link" target="_blank" rel="noopener">View Repository <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8.22 2.97a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06l2.97-2.97H3.75a.75.75 0 010-1.5h7.44L8.22 4.03a.75.75 0 010-1.06z"/></svg></a>' +
+                    '</div>';
+            });
+
+            reposGrid.innerHTML = html;
+
+            // Re-init reveal animations
+            var newCards = reposGrid.querySelectorAll('.reveal');
+            setTimeout(function () {
+                newCards.forEach(function (card) {
+                    card.classList.add('active');
+                });
+            }, 100);
+        })
+        .catch(function (error) {
+            console.error('Error fetching repos:', error);
+            reposGrid.innerHTML = '<div class="repos-error"><p>Unable to load repositories. Visit my GitHub directly.</p></div>';
+        });
+}
+
+// Initialize GitHub repos on page load
+document.addEventListener('DOMContentLoaded', initGitHubRepos);
+
+/* ===================================
    Console Easter Egg
    =================================== */
 console.log(`
